@@ -1,0 +1,109 @@
+{
+  "phase0": 0.0,
+  "phase1": 0.0,
+  "pcr": {
+    "frequency": {
+      "value": 0,
+      "min": -50,
+      "max": 50
+    },
+    "phase": "0",
+    "fwhm": {
+      "value": 40,
+      "min": 20,
+      "max": 80
+    }
+  },
+  "pi": {
+    "frequency": {
+      "value": -550,
+      "min": -620,
+      "max": -540
+    },
+    "phase": "0",
+    "fwhm": {
+      "value": 40,
+      "min": 10,
+      "max": 100
+    }
+  },
+  "atpc": {
+    "frequency": {
+      "value": 270,
+      "min": 250,
+      "max": 330
+    },
+    "phase": "0",
+    "fwhm": {
+    "value": 55,
+    "min": 40,
+    "max":100
+    }
+  },
+  "atpa": {
+    "frequency": {
+      "value": 914,
+      "min": 900,
+      "max": 930
+    },
+    "phase": "0",
+    "fwhm": {
+      "value": 54,
+      "min": 40,
+      "max": 80
+    }
+  },
+  "petn": {
+    "frequency": {
+      "value": -820,
+      "min": -850,
+      "max": -790
+    },
+    "phase": "0",
+    "fwhm": {
+      "value": 58,
+      "min": 10,
+      "max": 80
+    }
+  },
+  "pcho": {
+    "frequency": {
+      "value": -750,
+      "min": -780,
+      "max": -720
+    },
+    "phase": "0",
+    "fwhm": {
+      "value": 60,
+      "min": 20,
+      "max": 80
+    }
+  },
+  "gpetn": {
+    "frequency": {
+      "value": -420,
+      "min": -450,
+      "max": -390
+    },
+    "phase": "0",
+    "fwhm": {
+      "value": 73,
+      "max": 90,
+      "min": 10
+    }
+  },
+  "gpcho": {
+    "frequency": {
+      "value": -350,
+      "min": -380,
+      "max": -320
+    },
+    "phase": "0",
+    "fwhm": {
+      "value": 48,
+      "max": 80,
+      "min": 10
+    }
+  }
+
+}

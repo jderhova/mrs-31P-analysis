@@ -1,0 +1,93 @@
+# File to post-process and plot February 17, 12x12 CSI 31P in vivo spectroscopic fits
+
+#import
+import pickle
+import numpy as np
+from matplotlib import pyplot as plt
+
+#Opened cached fits file
+with open("fits.pkl", 'rb') as fp:
+    fits= pickle.load(fp)
+    print("Imported spectroscopic fits")
+
+#Metabolite Maps
+
+#PCr SNR Map
+pcr_snr_central_sag= np.zeros((12,12), 'complex')
+
+for i in range(12):
+    for j in range(12):
+        pcr_snr_central_sag[i,j]= fits[i,j]['model']['pcr']['amplitude']
+
+pcr_snr_central_sag /= np.amax(pcr_snr_central_sag)
+
+
+#Alpha-ATP SNR Map
+atpa_snr_central_sag= np.zeros((12,12), 'complex')
+
+for i in range(12):
+    for j in range(12):
+        atpa_snr_central_sag[i,j]=fits[i,j]['model']['atpa']['amplitude']
+        if(atpa_snr_central_sag[i,j]==0): #Prevent divide by zero error when calculating PCr/ATP map
+            atpa_snr_central_sag[i,j]= 1
+
+#Gamma-ATP SNR Map
+atpc_snr_central_sag= np.zeros((12,12), 'complex')
+
+for i in range(12):
+    for j in range(12):
+        atpc_snr_central_sag[i,j]=fits[i,j]['model']['atpc']['amplitude']
+        if (atpc_snr_central_sag[i,j]==0):#Prevent divide by zero error when calculating PCr/ATP map
+            atpc_snr_central_sag[i,j]=1
+
+atpc_snr_central_sag /= np.amax(atpc_snr_central_sag)
+
+
+#Create a sagittal mask using PCr SNR values
+sagittal_mask= np.zeros((12,12))
+for i in range (12):
+    for j in range(12):
+        if(pcr_snr_central_sag[i,j] > 5e+3):
+            sagittal_mask[i,j]= 1
+
+
+#Calculate PCR/Mean ATP ratio and apply mask
+mean_ATP= np.add(atpa_snr_central_sag,atpc_snr_central_sag)/2
+
+PCR_ATP_map= np.abs(pcr_snr_central_sag/mean_ATP)
+
+PCR_ATP_map= np.multiply(PCR_ATP_map, sagittal_mask)
+
+fig1= plt.figure()
+pcr_snr=plt.imshow(np.abs(pcr_snr_central_sag))
+cbar1= plt.colorbar(pcr_snr)
+cbar1.set_ticks([0.1,0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8,0.9, 1.0])
+plt.title('PCr SNR Plot')
+
+fig2= plt.figure()
+m_atp=plt.imshow(np.abs(mean_ATP))
+plt.title('Mean ATP Plot')
+cbar2= plt.colorbar(m_atp)
+
+fig3= plt.figure()
+atpc_snr= plt.imshow(np.abs(atpc_snr_central_sag))
+cbar3= plt.colorbar(atpc_snr)
+cbar3.set_ticks([0.1,0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8,0.9, 1.0])
+plt.title('Gamma-ATP SNR Plot')
+
+fig4= plt.figure()
+atpa_snr= plt.imshow(abs(atpa_snr_central_sag))
+cbar4= plt.colorbar(atpa_snr)
+plt.title('Alpha-ATP Plot')
+
+fig5= plt.figure()
+pcr_atp=plt.imshow(PCR_ATP_map, vmax= 15)
+cbar5= plt.colorbar(pcr_atp)
+plt.title('PCr/Mean ATP')
+
+plt.show()
+
+
+
+
+
